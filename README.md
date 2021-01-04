@@ -10,7 +10,7 @@
   - [LINK]() 
 - Project #2 (Team Project)
   - C++ 클래스 Viewer
-  - [LINK]()
+  - [LINK](https://github.com/seungri0826/2019_2_1_OOP)
 
 ### [71078] 논리회로및실습
 - Project #1
