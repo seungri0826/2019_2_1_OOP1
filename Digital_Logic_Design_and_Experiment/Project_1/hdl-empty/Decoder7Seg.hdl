@@ -1,0 +1,85 @@
+// Modified by Minho Kim (15 Oct 2014)
+
+/** 
+ * Decoder7Seg.
+ */
+
+CHIP Decoder7Seg {
+    IN in[4];
+    OUT out[7];
+
+    PARTS:
+	// Use the following pins (w, notw, x, notx, y, noty, z, notz) for easier implementation
+	Not(in=in[3],out=notw);	// NOT(w)
+	Not(in=notw,out=w);		// w (==out[3])
+	Not(in=in[2],out=notx);	// NOT(x)
+	Not(in=notx,out=x);		// x (==out[2])
+	Not(in=in[1],out=noty);	// NOT(y)
+	Not(in=noty,out=y);		// y (==out[1])
+	Not(in=in[0],out=notz);	// NOT(z)
+	Not(in=notz,out=z);		// z (==out[0])
+
+	// a = xy + ~x~z + ~wy + ~wxz + w~x~y (==out[6])
+	And(a=x, b=y, out=xy);
+	And(a=notx, b=notz, out=nxnz);
+	And(a=notw, b=y, out=nwy);
+	And(a=notw, b=x, out=nwx);
+	And(a=nwx, b=z, out=nwxz);
+	And(a=w, b=notx, out=wnx);
+	And(a=wnx, b=noty, out=wnxny);
+	Or(a=xy, b=nxnz, out=a1);
+	Or(a=a1, b=nwy, out=a2);
+	Or(a=a2, b=nwxz, out=a3);
+	Or(a=a3, b=wnxny, out=out[6]);
+
+	// b = ~w~x + ~x~y + ~w~y~z + w~yz + ~wyz + wy~z (==out[5])
+	And(a=notw, b=notx, out=nwnx);
+	And(a=notx, b=noty, out=nxny);
+	And(a=notw, b=noty, out=nwny);
+	And(a=nwny, b=notz, out=nwnynz);
+	And(a=w, b=noty, out=wny);
+	And(a=wny, b=z, out=wnyz);
+	And(a=nwy, b=z, out=nwyz);
+	And(a=w, b=y, out=wy);
+	And(a=wy, b=notz, out=wynz);
+	Or(a=nwnx, b=nxny, out=b1);
+	Or(a=b1, b=nwnynz, out=b2);
+	Or(a=b2, b=wnyz, out=b3);
+	Or(a=b3, b=nwyz, out=b4);
+	Or(a=b4, b=wynz, out=out[5]);
+
+	// c = ~w~y + ~wz + ~wx + ~yz + w~x (==out[4])
+	And(a=notw, b=z, out=nwz);
+	And(a=noty, b=z, out=nyz);
+	Or(a=nwny, b=nwz, out=c1);
+	Or(a=c1, b=nwx, out=c2);
+	Or(a=c2, b=nyz, out=c3);
+	Or(a=c3, b=wnx, out=out[4]);
+
+	// d = w~y + y~z + ~x~z + ~xy + x~yz (==out[3])
+	And(a=y, b=notz, out=ynz);
+	And(a=notx, b=y, out=nxy);
+	And(a=nyz, b=x, out=xnyz);
+	Or(a=wny, b=ynz, out=d1);
+	Or(a=d1, b=nxnz, out=d2);
+	Or(a=d2, b=nxy, out=d3);
+	Or(a=d3, b=xnyz, out=out[3]);		
+
+	// e = ~x~z + y~z + wx + wy (==out[2])
+	And(a=w, b=x, out=wx);
+	Or(a=nxnz, b=ynz, out=e1);
+	Or(a=e1, b=wx, out=e2);
+	Or(a=e2, b=wy, out=out[2]);
+
+	// f = ~x~y~z + ~wx + xy + w~xz (==out[1])
+	And(a=nxny, b=notz, out=nxnynz);
+	And(a=wnx, b=z, out=wnxz);
+	Or(a=nxnynz, b=nwx, out=f1);
+	Or(a=f1, b=xy, out=f2);
+	Or(a=f2, b=wnxz, out=out[1]);
+
+	// g = x~y + w + y~z + ~xy (==out[0])
+	Xor(a=x, b=y, out=g1);
+	Or(a=g1, b=w, out=g2);
+	Or(a=g2, b=ynz, out=out[0]);
+}

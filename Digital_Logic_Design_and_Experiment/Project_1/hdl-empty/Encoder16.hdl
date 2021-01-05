@@ -1,0 +1,54 @@
+// Modified by Minho Kim (15 Oct 2014)
+
+/** 
+ * Encoder16. out=0000 if in==0000 0000 0000 0001,
+ *            out=0001 if in==0000 0000 0000 0010,
+ *            out=0010 if in==0000 0000 0000 0100,
+ *            out=0011 if in==0000 0000 0000 1000,
+ *                           :
+ *                           :
+ *            out=1111 if in==1000 0000 0000 0000,
+ */
+
+CHIP Encoder16 {
+    IN in[16];
+    OUT out[4];
+
+    PARTS:
+    // Put your code here:
+    // w (==out[3])
+    Or(a=in[8], b=in[9], out=w1);
+    Or(a=w1, b=in[10], out=w2);
+    Or(a=w2, b=in[11], out=w3);
+    Or(a=w3, b=in[12], out=w4);
+    Or(a=w4, b=in[13], out=w5);
+    Or(a=w5, b=in[14], out=w6);
+    Or(a=w6, b=in[15], out=out[3]);
+
+    // x (==out[2])
+    Or(a=in[4], b=in[5], out=x1);
+    Or(a=x1, b=in[6], out=x2);
+    Or(a=x2, b=in[7], out=x3);
+    Or(a=x3, b=in[12], out=x4);
+    Or(a=x4, b=in[13], out=x5);
+    Or(a=x5, b=in[14], out=x6);
+    Or(a=x6, b=in[15], out=out[2]);
+
+    // y (==out[1])
+    Or(a=in[2], b=in[3], out=y1);
+    Or(a=y1, b=in[6], out=y2);
+    Or(a=y2, b=in[7], out=y3);
+    Or(a=y3, b=in[10], out=y4);
+    Or(a=y4, b=in[11], out=y5);
+    Or(a=y5, b=in[14], out=y6);
+    Or(a=y6, b=in[15], out=out[1]);
+
+    // z (==out[0])
+    Or(a=in[1], b=in[3], out=z1);
+    Or(a=z1, b=in[5], out=z2);
+    Or(a=z2, b=in[7], out=z3);
+    Or(a=z3, b=in[9], out=z4);
+    Or(a=z4, b=in[11], out=z5);
+    Or(a=z5, b=in[13], out=z6);
+    Or(a=z6, b=in[15], out=out[0]);
+}
