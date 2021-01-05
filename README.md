@@ -10,9 +10,9 @@
   - [LINK]() 
 - Project #2 (Team Project)
   - C++ 클래스 Viewer
-    </br><img src="/Object_Oriented_Programming/Project_2/img/oop2_2_class.JPG"  width=75% height=75%>  
   - [LINK](https://github.com/seungri0826/2019_2_1_OOP)
   - [원본 LINK](https://github.com/rkdthdah/javaproj)
+    </br><img src="/Object_Oriented_Programming/Project_2/img/oop2_2_class.JPG"  width=70% height=70%>  
 
 ### [71078] 논리회로및실습
 - Project #1
